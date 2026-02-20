@@ -1,15 +1,15 @@
 
 # Agentic Insurance Underwriter (PoC)
 
-## Governance for the Autonomous Enterprise: Underwriting reliability in the age of Agentic Hallucination.
+Governance for the Autonomous Enterprise: Underwriting reliability in the age of Agentic Hallucination.
 
-# Overview
+## Overview
 
 As enterprise decisions are increasingly delegated to autonomous agents, the primary bottleneck to adoption is reliability. This project is a Proof of Concept (PoC) for an AI Insurance Underwriter Agent. It acts as a Master Orchestrator (Governance Agent) that sits between user requests and execution agents.
 
 The Underwriter evaluates every task through a Risk Gate. If the risk is low, it "underwrites" the decision for a virtual premium. If the risk is high, it pauses execution and routes the task to a human-in-the-loop (HITL) queue.
 
-# The Problem: Hallucinations
+## The Problem: Hallucinations
 
 Agentic unreliability stems from two categories of hallucinations:
 
@@ -19,7 +19,7 @@ High Logprob: Confident wrong outputs (often caused by the "Lost-in-the-Middle" 
 
 This PoC demonstrates how to solve these problems through insurance-grade orchestration rather than just prompt engineering.
 
-# System Architecture
+## System Architecture
 
 The system is composed of four primary layers:
 
@@ -31,7 +31,7 @@ The Critic (Auditor): A separate model family (e.g., GPT auditing Claude) that v
 
 The Actuarial Ledger: A persistent SQL database logging every logprob, decision, and confidence score for compliance and calibration audits.
 
-# The Math: The Risk Gate
+## The Math: The Risk Gate
 
 The core decision logic is binary and auditable based on the Expected Value (EV) of Risk:
 
@@ -47,7 +47,7 @@ The Net Cost Equation:
 
 $$\text{Net Cost} = \text{Inference Cost} + \text{Insurance Premium} - \text{Labor Cost Avoided}$$
 
-# Repository Structure
+## Repository Structure
 
 ├── agents/
 │   ├── worker_agent.py       # Action-oriented agents (e.g., Invoicing)
@@ -61,7 +61,7 @@ $$\text{Net Cost} = \text{Inference Cost} + \text{Insurance Premium} - \text{Lab
 │   └── actuarial_ledger.db   # SQLite DB for audit trails
 └── config.yaml               # Thresholds, Labor Rates, and Multipliers
 
-# Getting Started
+## Getting Started
 
 Configure the Environment: Adjust config.yaml to set your human labor rates and model risk multipliers.
 
