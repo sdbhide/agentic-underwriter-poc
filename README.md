@@ -50,14 +50,17 @@ $$\text{Net Cost} = \text{Inference Cost} + \text{Insurance Premium} - \text{Lab
 ## Repository Structure
 
 ├── agents/
+
 │   ├── worker_agent.py       # Action-oriented agents (e.g., Invoicing)
 │   ├── critic_agent.py       # LLM-as-a-Judge reasoning audit
 │   └── underwriter_agent.py  # Governance & Master Orchestration
 ├── core/
+
 │   ├── risk_engine.py        # EV Calculation & Decision Logic
 │   ├── ledger.py             # SQL Actuarial Ledger interface
 │   └── chunker.py            # Agentic Chunking for large context handling
 ├── data/
+
 │   └── actuarial_ledger.db   # SQLite DB for audit trails
 └── config.yaml               # Thresholds, Labor Rates, and Multipliers
 
