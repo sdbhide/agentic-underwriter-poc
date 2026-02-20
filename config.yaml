@@ -1,21 +1,36 @@
-# Model Orchestration
-agents:
-  worker: "gpt-4-turbo"
-  [cite_start]critic: "claude-3-opus"  # Different model family to avoid shared architectural blind spots [cite: 22]
+# Model Orchestration Configuration
+models:
+  worker_agent: "gpt-4-turbo" # The agent performing the primary task
+  critic_agent: "claude-3-opus" # Auditor model (Cross-family verification)
 
-# Risk Management Logic 
-risk_gate:
-  [cite_start]risk_multiplier: 1.5      # Adjusted via Calibration Audits based on historical fail rates [cite: 40]
-  [cite_start]labor_rate_hourly: 60.00  # Pulled live from HR Payroll APIs [cite: 28]
-  min_confidence_threshold: 0.95
+# Insurance & Risk Parameters
+risk_management:
+  # Initial risk multiplier (Tuned via Calibration Audits)
+  risk_multiplier: 1.5 
+  
+  # Minimum confidence (average logprob) required for auto-approval
+  min_logprob_threshold: 0.92
+  
+  # Max cost of error for which we allow autonomous execution
+  max_autonomous_exposure: 5000.00 
 
-# Agentic Chunking Settings 
-chunking:
-  enabled: true
-  max_pages_per_chunk: 5
-  overlap_tokens: 200
+# Labor Economics (Simulated)
+economics:
+  # Fully Burdened Labor Rate (per hour) for human intervention
+  human_labor_rate_hourly: 60.00 
+  
+  # Average time (minutes) for a human to review a standard 10-page document
+  human_review_time_per_unit: 30
+  
+  # Standard Insurance Premium per autonomous decision
+  base_premium: 0.10
 
-# Virtual Economics [cite: 3, 37]
-insurance:
-  base_premium_per_decision: 0.10
-  payout_ratio: 1.0          # Multiplier for the cost of error in case of payout
+# Structural Solutions
+features:
+  agentic_chunking:
+    enabled: true
+    pages_per_chunk: 5
+    overlap_tokens: 150
+  ensemble_consensus:
+    enabled: true
+    parallel_runs: 3 # Triggered if logprobs fall below threshold
