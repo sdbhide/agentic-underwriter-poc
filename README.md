@@ -1,13 +1,13 @@
 
-# Agentic Insurance Underwriter (PoC)
+# Agentic Insurance Underwriter
 
 Governance for the Autonomous Enterprise: Underwriting reliability in the age of Agentic Hallucination.
 
 ## Overview
 
-As enterprise decisions are increasingly delegated to autonomous agents, the primary bottleneck to adoption is reliability. This project is a Proof of Concept (PoC) for an AI Insurance Underwriter Agent. It acts as a Master Orchestrator (Governance Agent) that sits between user requests and execution agents.
+As enterprise decisions are increasingly delegated to autonomous agents, the primary bottleneck to adoption is reliability. This project is a proposal for an AI Insurance Underwriter Agent. It acts as a Master Orchestrator (Governance Agent) that sits between user requests and execution agents.
 
-The Underwriter evaluates every task through a Risk Gate. If the risk is low, it "underwrites" the decision for a virtual premium. If the risk is high, it pauses execution and routes the task to a human-in-the-loop (HITL) queue.
+The Underwriter evaluates every task through a Risk Gate. If the risk is low, it 'underwrites' the decision for a virtual premium. If the risk is high, it pauses execution and routes the task to a human-in-the-loop (HITL) queue.
 
 ## The Problem: Hallucinations
 
@@ -17,7 +17,7 @@ Low Logprob: Uncertain guesswork (detectable via probability thresholds).
 
 High Logprob: Confident wrong outputs (often caused by the "Lost-in-the-Middle" problem in large context windows).
 
-This PoC demonstrates how to solve these problems through insurance-grade orchestration rather than just prompt engineering.
+We can model these problems through Logprob and Entropy and apply insurance-grade orchestration rather than just prompt engineering.
 
 ## System Architecture
 
