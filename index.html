@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Insurance Underwriter Dashboard</title>
+    <!-- Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom transitions for a smooth dashboard feel */
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide scrollbars but keep functionality for mobile nav */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Sidebar & Mobile Nav active state */
+        .nav-item-active {
+            background-color: #1e293b !important; /* Slate-800 */
+            color: white !important;
+            border-color: #1e293b !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        /* Sub-nav active state */
+        .sub-nav-item.active {
+            border-bottom: 2px solid #0f172a;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* Professional typography refinements */
+        h1, h2, h3 {
+            letter-spacing: -0.025em;
+        }
+        
+        .prose-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .prose-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #64748b;
+            font-weight: bold;
+        }
+
+        /* Fixed heights for sticky alignment */
+        :root {
+            --header-height: 64px;
+            --mobile-nav-height: 58px;
+        }
+
+        @media (max-width: 767px) {
+            header { height: var(--header-height); }
+            .mobile-nav-container { top: var(--header-height); height: var(--mobile-nav-height); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white border-b border-slate-200 px-6 md:px-8 flex items-center sticky top-0 z-50 shadow-sm h-16">
+        <div class="max-w-7xl mx-auto w-full flex justify-between items-center">
+            <h1 class="text-lg md:text-xl font-bold tracking-tight text-slate-900 truncate mr-4">
+                Agentic Insurance Underwriter <span class="hidden sm:inline text-slate-400 font-medium mx-2">|</span> <span class="hidden sm:inline text-slate-500 font-normal text-lg">Enterprise Orchestration</span>
+            </h1>
+            <div class="shrink-0 text-[10px] md:text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1 rounded-full uppercase tracking-wider">Internal Strategy</div>
+        </div>
+    </header>
+
+    <div class="flex flex-col md:flex-row flex-1 md:overflow-hidden">
+        
+        <!-- MOBILE NAVIGATION (Visible only on small screens) -->
+        <nav class="md:hidden bg-white border-b border-slate-200 p-2 flex gap-2 overflow-x-auto no-scrollbar mobile-nav-container sticky z-40">
+            <button onclick="showSection('what')" id="m-btn-what" class="mobile-btn nav-item-active whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 transition-all">What</button>
+            <button onclick="showSection('why')" id="m-btn-why" class="mobile-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 transition-all">Why</button>
+            <button onclick="showSection('how')" id="m-btn-how" class="mobile-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 transition-all">How</button>
+            <button onclick="showSection('example')" id="m-btn-example" class="mobile-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 transition-all">Example</button>
+            <button onclick="showSection('testing')" id="m-btn-testing" class="mobile-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 transition-all">Testing</button>
+            <button onclick="showSection('analogy')" id="m-btn-analogy" class="mobile-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 transition-all">Analogy</button>
+        </nav>
+
+        <!-- DESKTOP SIDEBAR (Hidden on mobile) -->
+        <nav class="hidden md:flex w-64 bg-white border-r border-slate-200 p-6 flex-col gap-3 overflow-y-auto shrink-0">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 px-2">Main Navigation</p>
+            <button onclick="showSection('what')" id="btn-what" class="sidebar-btn nav-item-active border border-slate-200 rounded-xl p-4 text-left font-medium transition-all hover:border-slate-400">What</button>
+            <button onclick="showSection('why')" id="btn-why" class="sidebar-btn border border-slate-200 rounded-xl p-4 text-left font-medium transition-all hover:border-slate-400">Why</button>
+            <button onclick="showSection('how')" id="btn-how" class="sidebar-btn border border-slate-200 rounded-xl p-4 text-left font-medium transition-all hover:border-slate-400">How</button>
+            <button onclick="showSection('example')" id="btn-example" class="sidebar-btn border border-slate-200 rounded-xl p-4 text-left font-medium transition-all hover:border-slate-400">Example</button>
+            <button onclick="showSection('testing')" id="btn-testing" class="sidebar-btn border border-slate-200 rounded-xl p-4 text-left font-medium transition-all hover:border-slate-400">A/B Testing</button>
+            <button onclick="showSection('analogy')" id="btn-analogy" class="sidebar-btn border border-slate-200 rounded-xl p-4 text-left font-medium transition-all hover:border-slate-400">Historical Analogy</button>
+        </nav>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 p-5 md:p-8 lg:p-16 md:overflow-y-auto bg-slate-50">
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- WHAT SECTION -->
+                <section id="what" class="content-section active">
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">Driving mass adoption of enterprise agents via insurance</h2>
+                    <div class="relative mb-8 md:mb-10 bg-slate-200 rounded-2xl overflow-hidden min-h-[224px] md:min-h-[320px] flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1454165833767-027ffea9e778?auto=format&fit=crop&q=80&w=1200" 
+                             alt="Underwriting Logic" class="w-full h-56 md:h-80 object-cover rounded-2xl shadow-lg border border-slate-200"
+                             onerror="this.parentElement.innerHTML='<div class=\'bg-slate-200 w-full h-full flex items-center justify-center text-slate-400 font-medium\'>Image Load Error</div>'">
+                        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-[10px] md:text-xs font-bold text-slate-800 border border-slate-200 z-10">FIGURE 1.0: ORCHESTRATION LAYER</div>
+                    </div>
+                    <ul class="prose-list text-base md:text-lg text-slate-600">
+                        <li><strong>Master Orchestrator:</strong> Acts as a Governance Agent that wraps around worker agents, owning API keys and controlling execution gates.</li>
+                        <li><strong>Risk Gatekeeping:</strong> Evaluates every decision to decide if it can be processed autonomously or if human intervention is more cost-effective.</li>
+                        <li><strong>Liability Underwriting:</strong> Accepts a per-decision insurance premium to 'insure' autonomous actions, issuing a payout if a decision is proven incorrect.</li>
+                        <li><strong>Claims Management:</strong> Utilizes a separate Claims Agent with access to underwriter data to handle human-triggered claims processes.</li>
+                    </ul>
+                </section>
+
+                <!-- WHY SECTION -->
+                <section id="why" class="content-section">
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-4 text-slate-900">High-margin diversification in a volatile market</h2>
+                    
+                    <div class="flex gap-6 md:gap-10 border-b border-slate-200 mb-8 md:mb-10 overflow-x-auto no-scrollbar">
+                        <button onclick="showSubWhy('business')" id="sub-btn-business" class="sub-nav-item active py-3 transition-all text-[10px] md:text-sm uppercase tracking-widest whitespace-nowrap">Business Strategy</button>
+                        <button onclick="showSubWhy('product')" id="sub-btn-product" class="sub-nav-item py-3 transition-all text-[10px] md:text-sm uppercase tracking-widest whitespace-nowrap">Product Strategy</button>
+                    </div>
+
+                    <div id="why-business" class="sub-why-content">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
+                             onerror="this.style.display='none'">
+                        <ul class="prose-list text-base md:text-lg text-slate-600">
+                            <li><strong>Revenue Diversification:</strong> Moving beyond volatile token-based pricing is vital to sustain core missions of safe AGI development.</li>
+                            <li><strong>Asset Amortization:</strong> Monetizes legacy models rendered obsolete by newer releases, leaving more compute available for research</li>
+                            <li><strong>Increased Lifetime Value:</strong> Captures deeper margins by shifting from a utility to a risk-management partner.</li>
+                        </ul>
+                    </div>
+
+                    <div id="why-product" class="sub-why-content hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bbda38a594a8?auto=format&fit=crop&q=80&w=1200" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
+                             onerror="this.style.display='none'">
+                        <ul class="prose-list text-base md:text-lg text-slate-600">
+                            <li><strong>Capping Hallucinations:</strong> Addresses agentic unreliability using Logprob and Entropy analysis for risk modeling Agentic decisions.</li>
+                            <li><strong>Predictive Underwriting:</strong> Unlike traditional insurance, the system evaluates and 'insures' the risk before the action is taken.</li>
+                            <li><strong>Customer Confidence:</strong> Mitigates executive anxiety regarding AI ROI by providing a financial safety net for autonomous errors.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- HOW SECTION -->
+                <section id="how" class="content-section">
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">Technical Architecture & Risk Logic</h2>
+                    <img src="https://images.unsplash.com/photo-1581291518655-95137060ef71?auto=format&fit=crop&q=80&w=1200" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
+                         onerror="this.style.display='none'">
+                    <ul class="prose-list text-base md:text-lg text-slate-600">
+                        <li><strong>Binary Decision Logic:</strong> Compares the Expected Value (EV) of AI error against the Fully Burdened Labor Rate of a human supervisor.</li>
+                        <li><strong>Dynamic Calibration:</strong> If a model's failure rate exceeds confidence thresholds, the system automatically adjusts the premium/gate logic.</li>
+                        <li><strong>Actuarial Ledger:</strong> Logs internal chain-of-thought, token probabilities, and final decisions to an immutable database for real-time audit trails.</li>
+                    </ul>
+                </section>
+
+                <!-- HISTORICAL ANALOGY SECTION -->
+                <section id="analogy" class="content-section">
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">The Merchant Shipping Revolution</h2>
+                    <img src="https://images.unsplash.com/photo-1494412574743-0194849a6421?auto=format&fit=crop&q=80&w=1200" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
+                         onerror="this.style.display='none'">
+                    <ul class="prose-list text-base md:text-lg text-slate-600">
+                        <li><strong>Scalability:</strong> 17th century European merchant shipping was shaped by new technology but adoption lagged because of the cost of capital.</li>
+                        <li><strong>Standardization of Risk:</strong> Logistics didn't explode in scale until insurance allowed companies to ship millions in cargo without fearing a single lost ship would bankrupt them.</li>
+                        <li><strong>The Trust Layer:</strong> Early steam engines weren't adopted until safety valves and insurance frameworks allowed factory owners to mitigate explosion risks.</li>
+                    </ul>
+                </section>
+
+                <!-- EXAMPLE SECTION -->
+                <section id="example" class="content-section">
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">Invoice Processing Agent</h2>
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1200" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
+                         onerror="this.style.display='none'">
+                    <ul class="prose-list text-base md:text-lg text-slate-600">
+                        <li><strong>The Task:</strong> An Agent receives PDF/Email, matches it to internal Purchase Orders, and authorizes payment</li>
+                        <li><strong>Underwriter Gate:</strong> The system detects the confidence in the token distribution and calculates P(Hallucination).</li>
+                        <li><strong>Decision:</strong> The Underwriter calculates a premium to insure the invoice. If it's inaccurate, the insurance covers the loss.</li>
+                        <li><strong>Outcome:</strong> The mundane task proceeds autonomously instead of waiting for a human employee to verify everthying manually.</li>
+                    </ul>
+                </section>
+
+                <!-- A/B TESTING SECTION -->
+                <section id="testing" class="content-section">
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">GTM Experimentation Roadmap</h2>
+                    <img src="https://images.unsplash.com/photo-1551288049-bbda38a594a8?auto=format&fit=crop&q=80&w=1200" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
+                         onerror="this.style.display='none'">
+                    <ul class="prose-list text-base md:text-lg text-slate-600">
+                        <li><strong>Capital Reserve Model:</strong> Testing a one-time capital reserve fee plus a per-decision premium structure.</li>
+                        <li><strong>Hybrid Subscription:</strong> Monthly 'Agent Access' fee combined with high-margin per-decision underwriting layers.</li>
+                        <li><strong>Loss Leader API:</strong> Testing discounts on pure API inference to drive users into the higher-margin Insurance Orchestration layer.</li>
+                    </ul>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Update active state for content
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update active state for desktop buttons
+            const desktopButtons = document.querySelectorAll('.sidebar-btn');
+            desktopButtons.forEach(btn => btn.classList.remove('nav-item-active'));
+            const activeDesktopBtn = document.getElementById('btn-' + sectionId);
+            if (activeDesktopBtn) activeDesktopBtn.classList.add('nav-item-active');
+
+            // Update active state for mobile buttons
+            const mobileButtons = document.querySelectorAll('.mobile-btn');
+            mobileButtons.forEach(btn => btn.classList.remove('nav-item-active'));
+            const activeMobileBtn = document.getElementById('m-btn-' + sectionId);
+            if (activeMobileBtn) activeMobileBtn.classList.add('nav-item-active');
+            
+            // Auto-scroll to top of main content on change
+            const mainEl = document.querySelector('main');
+            if (window.innerWidth < 768) {
+                window.scrollTo({ top: document.querySelector('.mobile-nav-container').offsetTop - 64, behavior: 'smooth' });
+            } else {
+                mainEl.scrollTop = 0;
+            }
+        }
+
+        function showSubWhy(subId) {
+            const contents = document.querySelectorAll('.sub-why-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const subButtons = document.querySelectorAll('.sub-nav-item');
+            subButtons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById('why-' + subId).classList.remove('hidden');
+            document.getElementById('sub-btn-' + subId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
