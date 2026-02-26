@@ -1,11 +1,11 @@
 
 # Agentic Insurance Underwriter
 
-Governance for the Autonomous Enterprise: Underwriting reliability in the age of Agentic Hallucination. Check Revenue Simulations [here](https://colab.research.google.com/drive/1qBgS_ZRSgsAWeCZrniU-DbnOZb6fXy_O?usp=sharing)
+Underwriting reliability in the age of Agentic Hallucination. Check Revenue Simulations [here](https://colab.research.google.com/drive/1qBgS_ZRSgsAWeCZrniU-DbnOZb6fXy_O?usp=sharing)
 
 ## Overview
 
-As enterprise decisions are increasingly delegated to autonomous agents, the primary bottleneck to adoption is reliability. This project is a proposal for an AI Insurance Underwriter Agent. It acts as a Master Orchestrator (Governance Agent) that sits between user requests and execution agents.
+As enterprise decisions are increasingly delegated to autonomous agents, the primary bottleneck to adoption is anxiety regarding reliability. This project is a proposal for an AI Insurance Underwriter Agent. It acts as a Master Orchestrator (Governance Agent) that sits between user requests and execution agents.
 
 The Underwriter evaluates every task through a Risk Gate. If the risk is low, it 'underwrites' the decision for a virtual premium. If the risk is high, it pauses execution and routes the task to a human-in-the-loop (HITL) queue.
 
