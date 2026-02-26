@@ -47,31 +47,3 @@ The Net Cost Equation:
 
 $$\text{Net Cost} = \text{Inference Cost} + \text{Insurance Premium} - \text{Labor Cost Avoided}$$
 
-## Repository Structure
-
-├── agents/
-
-│   ├── worker_agent.py       # Action-oriented agents (e.g., Invoicing)
-│   ├── critic_agent.py       # LLM-as-a-Judge reasoning audit
-│   └── underwriter_agent.py  # Governance & Master Orchestration
-├── core/
-
-│   ├── risk_engine.py        # EV Calculation & Decision Logic
-│   ├── ledger.py             # SQL Actuarial Ledger interface
-│   └── chunker.py            # Agentic Chunking for large context handling
-├── data/
-
-│   └── actuarial_ledger.db   # SQLite DB for audit trails
-└── config.yaml               # Thresholds, Labor Rates, and Multipliers
-
-## Getting Started
-
-Configure the Environment: Adjust config.yaml to set your human labor rates and model risk multipliers.
-
-Run a Task: Use main.py to submit a task (e.g., a high-value invoice).
-
-Audit the Ledger: Review data/actuarial_ledger.db to see the logprobs and why the Underwriter chose a specific path.
-
-Calibrate: Run the calibration script to update risk multipliers based on historical accuracy.
-
-Disclaimer: This is a Proof of Concept designed for a virtual environment. No real money or insurance contracts are being exchanged.
