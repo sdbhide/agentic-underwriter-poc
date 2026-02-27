@@ -1,7 +1,7 @@
 
 # Agentic Insurance Underwriter
 
-Underwriting reliability in the age of Agentic Hallucination. Check Revenue Simulations [here](https://colab.research.google.com/drive/1qBgS_ZRSgsAWeCZrniU-DbnOZb6fXy_O?usp=sharing)
+Underwriting reliability in the age of Agentic Hallucination. View dashboard pitch [here](https://sdbhide.github.io/agentic-underwriter-poc/). Check Revenue Simulations [here](https://colab.research.google.com/drive/1qBgS_ZRSgsAWeCZrniU-DbnOZb6fXy_O?usp=sharing)
 
 ## Overview
 
