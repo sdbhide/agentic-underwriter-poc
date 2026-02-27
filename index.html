@@ -253,7 +253,7 @@
          * getBBox(), then re-injects it with a tight viewBox (+ small padding).
          * scale > 1 zooms into the content (effective magnification).
          */
-        async function loadCroppedSVG(url, containerId, { scale = 1, pad = 90 } = {}) {
+        async function loadCroppedSVG(url, containerId, { scale = 1, pad = 120 } = {}) {
             const container = document.getElementById(containerId);
             if (!container) return;
 
