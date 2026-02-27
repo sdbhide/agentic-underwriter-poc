@@ -118,10 +118,8 @@
                 <!-- WHAT SECTION -->
                 <section id="what" class="content-section active">
                     <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">Driving mass adoption of enterprise agents via insurance</h2>
-                    <div class="relative mb-8 md:mb-10 bg-slate-200 rounded-2xl overflow-hidden flex items-center justify-center">
-                        <img src="https://raw.githubusercontent.com/sdbhide/agentic-underwriter-poc/main/assets/AI_Insurance_diagram.svg" 
-                             alt="AI Insurance Diagram" class="w-full rounded-2xl shadow-lg border border-slate-200"
-                             onerror="this.parentElement.innerHTML='<div class=\'bg-slate-200 w-full h-56 flex items-center justify-center text-slate-400 font-medium\'>Image Load Error</div>'">
+                    <div class="relative mb-8 md:mb-10 rounded-2xl overflow-hidden">
+                        <div id="svg-what" class="w-full"></div>
                         <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-[10px] md:text-xs font-bold text-slate-800 border border-slate-200 z-10">FIGURE 1.0: ORCHESTRATION LAYER</div>
                     </div>
                     <ul class="prose-list text-base md:text-lg text-slate-600">
@@ -161,8 +159,7 @@
                 <!-- HOW SECTION -->
                 <section id="how" class="content-section">
                     <h2 class="text-2xl md:text-4xl font-extrabold mb-6 md:mb-8 text-slate-900 leading-tight">Technical Architecture & Risk Logic</h2>
-                    <img src="https://raw.githubusercontent.com/sdbhide/agentic-underwriter-poc/main/assets/AI_Insurance_diagram.svg" class="w-full rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
-                         onerror="this.style.display='none'">
+                    <div id="svg-how" class="w-full mb-8 md:mb-10"></div>
                     <ul class="prose-list text-base md:text-lg text-slate-600">
                         <li><strong>Binary Decision Logic:</strong> Compares the Expected Value (EV) of AI error against the Fully Burdened Labor Rate of a human supervisor.</li>
                         <li><strong>Dynamic Calibration:</strong> If a model's failure rate exceeds confidence thresholds, the system automatically adjusts the premium/gate logic.</li>
@@ -188,8 +185,7 @@
                     <p class="text-sm md:text-base text-slate-500 mb-6 md:mb-8 -mt-4 md:-mt-6">
                         <a href="https://colab.research.google.com/drive/1qBgS_ZRSgsAWeCZrniU-DbnOZb6fXy_O?usp=sharing" target="_blank" class="text-blue-600 hover:text-blue-800 underline font-medium">For Code click here</a>
                     </p>
-                    <img src="https://raw.githubusercontent.com/sdbhide/agentic-underwriter-poc/main/assets/AI_Underwriter_simulated.svg" class="w-full rounded-2xl mb-8 md:mb-10 shadow-lg border border-slate-200"
-                         onerror="this.style.display='none'">
+                    <div id="svg-example" class="w-full mb-8 md:mb-10"></div>
                     <ul class="prose-list text-base md:text-lg text-slate-600">
                         <li><strong>The Task:</strong> An Agent receives PDF/Email, matches it to internal Purchase Orders, and authorizes payment</li>
                         <li><strong>Underwriter Gate:</strong> The system detects the confidence in the token distribution and calculates P(Hallucination).</li>
@@ -250,6 +246,97 @@
             document.getElementById('why-' + subId).classList.remove('hidden');
             document.getElementById('sub-btn-' + subId).classList.add('active');
         }
+    </script>
+    <script>
+        /* ── SVG Crop & Inline Loader ──────────────────────────────────────────
+         * Fetches an SVG, renders it hidden, measures the real content bbox via
+         * getBBox(), then re-injects it with a tight viewBox (+ small padding).
+         * scale > 1 zooms into the content (effective magnification).
+         */
+        async function loadCroppedSVG(url, containerId, { scale = 1, pad = 12 } = {}) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('fetch failed');
+                const svgText = await res.text();
+
+                // Parse SVG from text
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(svgText, 'image/svg+xml');
+                const svgEl = doc.querySelector('svg');
+                if (!svgEl) throw new Error('no svg element');
+
+                // Place in a hidden off-screen div so the browser renders it
+                // and getBBox() returns real pixel values
+                const ghost = document.createElement('div');
+                ghost.style.cssText = [
+                    'position:fixed',
+                    'top:-99999px',
+                    'left:-99999px',
+                    'width:1400px',
+                    'height:auto',
+                    'visibility:hidden',
+                    'pointer-events:none'
+                ].join(';');
+                ghost.appendChild(svgEl);
+                document.body.appendChild(ghost);
+
+                // Wait two animation frames for layout to settle
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+                // Measure true content bounds
+                let bbox;
+                try {
+                    bbox = svgEl.getBBox();
+                } catch (_) {
+                    // Fallback: use declared width/height
+                    const w = parseFloat(svgEl.getAttribute('width') || svgEl.viewBox.baseVal.width || 800);
+                    const h = parseFloat(svgEl.getAttribute('height') || svgEl.viewBox.baseVal.height || 600);
+                    bbox = { x: 0, y: 0, width: w, height: h };
+                }
+
+                document.body.removeChild(ghost);
+
+                // Build tight viewBox, then shrink it by `scale` (zoom in on centre)
+                const cx = bbox.x + bbox.width  / 2;
+                const cy = bbox.y + bbox.height / 2;
+                const vw = (bbox.width  + pad * 2) / scale;
+                const vh = (bbox.height + pad * 2) / scale;
+                const vx = cx - vw / 2;
+                const vy = cy - vh / 2;
+
+                svgEl.setAttribute('viewBox', `${vx} ${vy} ${vw} ${vh}`);
+                svgEl.setAttribute('width',  '100%');
+                svgEl.removeAttribute('height');
+                svgEl.style.cssText = [
+                    'display:block',
+                    'width:100%',
+                    'height:auto',
+                    'border-radius:1rem',
+                    'box-shadow:0 10px 15px -3px rgb(0 0 0/.1),0 4px 6px -4px rgb(0 0 0/.1)',
+                    'border:1px solid #e2e8f0'
+                ].join(';');
+
+                container.appendChild(svgEl);
+
+            } catch (err) {
+                console.warn('SVG load error for', containerId, err);
+                container.innerHTML =
+                    '<div style="background:#f1f5f9;border-radius:1rem;padding:3rem;text-align:center;color:#94a3b8;font-size:.875rem;">Could not load diagram</div>';
+            }
+        }
+
+        const INSURANCE_SVG = 'https://raw.githubusercontent.com/sdbhide/agentic-underwriter-poc/main/assets/AI_Insurance_diagram.svg';
+        const UNDERWRITER_SVG = 'https://raw.githubusercontent.com/sdbhide/agentic-underwriter-poc/main/assets/AI_Underwriter_simulated.svg';
+
+        // Load all three on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCroppedSVG(INSURANCE_SVG,   'svg-what',    { scale: 1 });
+            loadCroppedSVG(INSURANCE_SVG,   'svg-how',     { scale: 1 });
+            loadCroppedSVG(UNDERWRITER_SVG, 'svg-example', { scale: 1.5 });
+        });
     </script>
 </body>
 </html>
